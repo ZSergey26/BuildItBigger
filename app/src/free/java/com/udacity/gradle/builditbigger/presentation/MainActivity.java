@@ -10,6 +10,7 @@ import com.udacity.gradle.builditbigger.operations.GetJokeOperation;
 import com.zsergei.jokesui.IJokesUI;
 import com.zsergei.jokesui.JokesUI;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,6 +80,9 @@ public class MainActivity extends ChronosAppCompatActivity {
 
     // Calls via reflection when operation is completed
     public void onOperationFinished(final GetJokeOperation.Result result) {
+
+        dismissProgress();
+
         if(result.isSuccessful()) {
             mJokesUI.showJokeInNewActivity(this, result.getOutput());
         } else {
@@ -88,10 +92,27 @@ public class MainActivity extends ChronosAppCompatActivity {
 
     // On button pressed
     public void tellJoke(final View view) {
+
+        showProgress(getString(R.string.progress_dialog_title), getString(R.string.progress_dialog_message));
+
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
             runOperation(new GetJokeOperation());
+        }
+    }
+
+    //I'm use ProgressDialog to show loading indicator while joke loading from server
+    private ProgressDialog mProgressDialog;
+    public void showProgress(final CharSequence title,final CharSequence message) {
+        mProgressDialog = ProgressDialog.show(this, title,
+                message, true);
+    }
+
+
+    public void dismissProgress() {
+        if(mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
     }
 
