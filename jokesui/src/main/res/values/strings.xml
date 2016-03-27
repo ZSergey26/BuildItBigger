@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Jokes UI</string>
+    <string name="joke_activity_stub">Joke</string>
+</resources>
