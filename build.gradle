@@ -17,3 +17,17 @@ allprojects {
         jcenter()
     }
 }
+
+task androidFuncTestWithBackend() {
+    evaluationDependsOn ":backend"
+
+    project(":backend") {
+        appengine {
+            daemon true
+        }
+    }
+    mustRunAfter ':backend:appengineRun'
+    dependsOn ':app:connectedAndroidTest'
+
+    finalizedBy ':backend:appengineStop'
+}
